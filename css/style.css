@@ -464,6 +464,13 @@
       width: 50%;
       padding: 0 15px;
   }
+  .table__column-12 {
+    width: 100%;
+    padding: 0 15px;
+  }
+  .table__column-12 > td {
+      width: auto !important;
+  }
   .table__column-6 > td {
       width: auto !important;
       margin-right: 20px; 
@@ -571,8 +578,31 @@
     .addinfo {
       min-width: 330px;
       width: auto;
-      display: BLOCK;
       margin: 5px 0;
+    }
+    .table__column-3,
+    .table__column-6 {
+        width: 100%;
+    }
+    .table__column-6 {
+        justify-content: flex-start;
+    }
+    .outputs {
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+    }
+    .payments {
+        padding: 0;
+    }
+    .paymentTbl th {
+        font-size: 15px;
+    }
+    .paymentTbl td {
+        font-size: 14px;
+    }
+    .table__column-12 > td {
+        display: flex;
     }
     .buttons {
       width: 100%;
