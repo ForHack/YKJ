@@ -512,7 +512,7 @@ function Operation() {
                 var myRate = document.querySelector('#nominalRate').value;
                 // ((nrm(saldo, 100).toFixed(2) * myRate) / (365*30)).toFixed(2)
                 
-               var creditPer  =  ((+nrm(saldo,100).toFixed(2)* myRate) / (366.6*3)).toFixed(2)
+               var creditPer  =  ((+nrm(saldo,100).toFixed(2)* myRate) / (365*30)).toFixed(2)
                tableOfPayments += ` <td> ${creditPer}</td>\n`;
                var myAmntCredit = document.querySelector('#amntCredit').value;
                var myTerm = document.querySelector('#term').value;
