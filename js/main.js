@@ -399,16 +399,28 @@ function Operation() {
     tableOfPayments += "<thead><tr class='blue'>\n";
     tableOfPayments += "<th class=\"firstcol\">№</th>\n";
     tableOfPayments += "<th>To'lov sanasi</th>\n";
-    tableOfPayments += "<th>Kredit qoldig'i</th>\n";
-    tableOfPayments += "<th class=\"lastcol\">To'lov</th>\n";
+    tableOfPayments += "<th>Kredit Summasi</th>\n";
+    tableOfPayments += "<th class=\"lastcol\">Kredit Foiz</th>\n";
+    tableOfPayments += "<th>Asosiy qarz</th>\n";
+    tableOfPayments += "<th>Bir oylik jami to'lovlar</th>\n";
     tableOfPayments += "</tr></thead>\n";
     tableOfPayments += "<tbody>\n";
 	
 	tableOfPayments += "<tr class='green'>";
-    tableOfPayments += "<td class=\"firstcol\">0</td>\n";
+    tableOfPayments += "<td class=\"firstcol\">1</td>\n";
     tableOfPayments += "<td>" +  ('0' + aPayment[0].date.getDate()).slice(-2) + "." + ('0' +(aPayment[0].date.getMonth() + 1)).slice(-2) + "." + aPayment[0].date.getFullYear()+"</td>\n";
-    tableOfPayments += "<td>0</td>\n";
-    tableOfPayments += "<td class=\"lastcol\">" + aPayment[0].sum.toFixed(2) + "</td>\n";
+    
+
+    var myAmntCreditBase = +document.querySelector('#amntCredit').value;
+    var myTermBase = +document.querySelector('#term').value;
+    var myNominalRateBase = +document.querySelector('#nominalRate').value;
+    tableOfPayments += `<td>${myAmntCreditBase}</td>\n`;
+    var perMonthSum = ((+(aPayment[0].sum.toFixed(2)) * myNominalRateBase) / (365*3) + +(myAmntCreditBase / myTermBase).toFixed(2))
+    // var test = (aPayment[0].sum.toFixed(2))
+    console.log(typeof myNominalRateBase)
+    tableOfPayments += "<td class=\"lastcol\">" + (((aPayment[0].sum.toFixed(2)) * myNominalRateBase) / (365*3)).toFixed(2) + "</td>\n";
+    tableOfPayments += `<td>${(myAmntCreditBase / myTermBase).toFixed(2)}</td>\n`;
+    tableOfPayments += `<td>${perMonthSum.toFixed(0)}</td>\n`;
     tableOfPayments += "</tr>\n";
 	
 	
@@ -447,10 +459,11 @@ function Operation() {
         sum_other_payments = 0;
         sum_sum = 0;
 //        tableOfPayments += "<tbody>\n";
-        for( i = 1; i <= vTerm; i++ )
+        for( i = 1; i <= vTerm - 1 ; i++ )
         {
+            console.log(i)
             tableOfPayments += "<tr" + ( (i+1)%12 == 0 ? ' class="year_delimiter"' : '' ) + ">\n";
-            tableOfPayments += "<td>" + (i) + "</td>\n";
+            tableOfPayments += "<td>" + (i + 1)  +  "</td>\n";
             tableOfPayments += "<td>" +  ('0' + aPayment[i].date.getDate()).slice(-2) + "." + ('0' +(aPayment[i].date.getMonth() + 1)).slice(-2) + "." + aPayment[i].date.getFullYear()+"</td>\n";
 
 			body = payments;
@@ -491,10 +504,29 @@ function Operation() {
 				aPayment[i].sum= (body + procent + other_payments)*-1;
 				saldo -= body;
 			}
-			
-			tableOfPayments += "<td>" + nrm(saldo,100).toFixed(2) + "</td>\n";
-            tableOfPayments += "<td>" + nrm(aPayment[i].sum*-1,100).toFixed(2) + "</td>\n";
-            sum_sum += aPayment[i].sum;
+            
+            ///////////////////////////////EDIT HERE//////////////////////////////////////////
+            // Kredit summasi
+            tableOfPayments += "<td>"   + nrm(saldo,100).toFixed(2) + "</td>\n";
+               // Kredit foiz
+                var myRate = document.querySelector('#nominalRate').value;
+                // ((nrm(saldo, 100).toFixed(2) * myRate) / (365*30)).toFixed(2)
+                
+               var creditPer  =  ((+nrm(saldo,100).toFixed(2)* myRate) / (366.6*3)).toFixed(2)
+               tableOfPayments += ` <td> ${creditPer}</td>\n`;
+               var myAmntCredit = document.querySelector('#amntCredit').value;
+               var myTerm = document.querySelector('#term').value;
+               // Asosiy qarz
+               var debtPer = (myAmntCredit / myTerm).toFixed(2)
+               tableOfPayments += `<td>${ debtPer }</td>\n`;
+               sum_sum += aPayment[i].sum;
+            // Bir oylik jami To'lovlar	
+            // tableOfPayments += "<td>" +   nrm(aPayment[i].sum*-1,100).toFixed(2) + "</td>\n";
+            tableOfPayments += `<td>${(Math.round(creditPer) + Math.round(debtPer))} </td>\n`;
+         
+         
+           
+            console.log()
 
             tableOfPayments += "</tr>\n";
             
@@ -520,7 +552,7 @@ function Operation() {
 //					   
 //			intDayInYear = (new Date(dates[i].getFullYear(),11,31) - new Date(dates[i].getFullYear(),0,0))/86400000;
 			
-            tableOfPayments += "<tr" + ( (i+1)%12 == 0 ? ' class="year_delimiter"' : '' ) + ">\n";
+            tableOfPayments += "<tr" +  ( (i+1)%12 == 0 ? ' class="year_delimiter"' : '' ) + ">\n";
             tableOfPayments += "<td>" + (i) + "</td>\n";
             tableOfPayments += "<td>" +  ('0' + aPayment[i].date.getDate()).slice(-2) + "." + ('0' +(aPayment[i].date.getMonth() + 1)).slice(-2) + "." + aPayment[i].date.getFullYear()+"</td>\n";
 
@@ -578,8 +610,8 @@ function Operation() {
 			
 			sum_sum += aPayment[i].sum;
 			
-			tableOfPayments += "<td>" +  nrm(saldo,100).toFixed(2) + "</td>\n";
-			tableOfPayments += "<td>" + nrm(aPayment[i].sum*-1,100).toFixed(2) + "</td>\n";
+			tableOfPayments += "<td>"+   nrm(saldo,100).toFixed(2) + "</td>\n";
+			tableOfPayments += "<td>"  + nrm(aPayment[i].sum*-1,100).toFixed(2) + "</td>\n";
 			
 			
             tableOfPayments += "</tr>\n";
@@ -1090,10 +1122,10 @@ function  clearField(nameField){
 function Recalc(){
 
     
-        vSum = parseFloat(document.getElementById("amntCredit").value) || 400000;
+        vSum = parseFloat(document.getElementById("amntCredit").value) || 1000000;
         vTerm = parseFloat(document.getElementById("term").value) || 12;
         vPay = parseFloat(document.getElementById("Payment").value) || 37053.8;
-        vProc = parseFloat(document.getElementById("nominalRate").value.replace(/[,.]/g, '.')) || 20;
+        vProc = parseFloat(document.getElementById("nominalRate").value.replace(/[,.]/g, '.')) || 15;
         vProc = vProc / 1200;
     
 

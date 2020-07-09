@@ -42,14 +42,14 @@
                         <tr class='table__column-3'>
                             <td colspan="2">
                                 <div class="swButton">Kredit summasi</div>
-                                <input class="editWide pdr" id="amntCredit" type="number" step="1000" min="0" pattern="[0-9]*" oninput="Recalc();" value="400000">
+                                <input class="editWide pdr" id="amntCredit" type="number" step="1000" min="0" pattern="[0-9]*" oninput="Recalc();" value="1000000">
                             </td>
                         </tr>
                         <tr class='table__column-3'>
                             <td colspan="2">
                                 <input id="ch2" type="radio" name="mycheck" value="2" class="switch">
-                                <div class="swButton">Baholash (%)</div>
-                                <input class="editWide pdr" id="nominalRate" type="number" min="0" max="1000" step="0.1" oninput="Recalc();" value="20">
+                                <div class="swButton">Foiz (%)</div>
+                                <input class="editWide pdr" id="nominalRate" type="number" min="0" max="1000" step="0.1" oninput="Recalc();" value="15">
                             </td>
                         </tr>
                         <tr class='table__column-3'>
@@ -65,7 +65,7 @@
                                 <input class="editWide pdr" id="Payment" type="number" value="37053.8" oninput="Recalc();" readonly="">
                             </td>
                         </tr>
-                        <tr class='table__column-3'>
+                        <tr class='table__column-12'>
                             <td colspan="2">
                                 <button id="btnWide" onclick="Operation();" type="button">To'lovlarni hisoblash</button>
                             </td>
